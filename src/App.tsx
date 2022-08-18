@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import "./App.css";
+import PracticeForm, { Hobby } from "./components/PracticeForm";
+import ShowUser from "./components/ShowUser";
+import { RootState } from "./redux/store";
 
-function App() {
+const App: React.FC = () => {
+  const dataUser = useSelector((state: RootState) => state.user);
+  const [hobbyUpdate, setHobbyUpdate] = useState<Hobby>({
+    name: "",
+    value: "",
+    key: "",
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      className="App"
+      style={{
+        backgroundColor: "#554994",
+        height: "100vh",
+        paddingTop: "100px",
+      }}
+    >
+      <div
+        style={{
+          width: "600px",
+          margin: "auto",
+          padding: "30px",
+          backgroundColor: "rgb(246, 117, 168, 0.2)",
+        }}
+      >
+        <PracticeForm
+          hobbyUpdate={hobbyUpdate}
+          setHobbyUpdate={setHobbyUpdate}
+        />
+        <ShowUser dataUser={dataUser} setHobbyUpdate={setHobbyUpdate} />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
