@@ -10,7 +10,7 @@ export type UserInputs = {
   email: string;
   bio: string;
   dateOfBirth: Date;
-  hobbies: Hobby[];
+  hobbies: Hobby;
 };
 export type Hobby = {
   name: string;
@@ -37,26 +37,26 @@ const PracticeForm: React.FC<Props> = (props) => {
   const onSubmitUser: SubmitHandler<UserInputs> = (data) => {
     if (!hobbyUpdate.key) {
       dispatch(addUser(data));
-      setValue(`hobbies.${0}.name`, "");
-      setValue(`hobbies.${0}.value`, "");
+      setValue(`hobbies.name`, "");
+      setValue(`hobbies.value`, "");
     } else {
-      dispatch(updateHobby({ ...data.hobbies[0], key: hobbyUpdate.key }));
+      dispatch(updateHobby({ ...data.hobbies, key: hobbyUpdate.key }));
       setHobbyUpdate({
         name: "",
         value: "",
         key: "",
       });
-      setValue(`hobbies.${0}.name`, "");
-      setValue(`hobbies.${0}.value`, "");
+      setValue(`hobbies.name`, "");
+      setValue(`hobbies.value`, "");
     }
   };
 
   useEffect(() => {
     if (hobbyUpdate.name) {
-      setValue(`hobbies.${0}.name`, hobbyUpdate.name);
+      setValue(`hobbies.name`, hobbyUpdate.name);
     }
     if (hobbyUpdate.value) {
-      setValue(`hobbies.${0}.value`, hobbyUpdate.value);
+      setValue(`hobbies.value`, hobbyUpdate.value);
     }
   }, [hobbyUpdate.name, hobbyUpdate.value, setValue]);
 
@@ -87,13 +87,12 @@ const PracticeForm: React.FC<Props> = (props) => {
           )}
         />
 
-        <input {...register(`hobbies.${0}.name`)} placeholder="name hobby" />
-        <input
-          {...register(`hobbies.${0}.value`)}
-          placeholder="description hobby"
-        />
+        <input {...register(`hobbies.name`)} placeholder="name hobby" />
+        <input {...register(`hobbies.value`)} placeholder="description hobby" />
 
-        <button type="submit">{hobbyUpdate.key ? "Update" : "Submit"}</button>
+        <button type="submit" data-testid="submit-user">
+          {hobbyUpdate.key ? "Update" : "Submit"}
+        </button>
       </div>
     </form>
   );

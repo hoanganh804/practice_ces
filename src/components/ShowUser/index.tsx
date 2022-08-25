@@ -1,12 +1,12 @@
 import moment from "moment";
 import React, { Dispatch, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
-import { deleteHobby } from "../../redux/slice/userSlice";
+import { deleteHobby, User } from "../../redux/slice/userSlice";
 import { AppDispatch } from "../../redux/store";
-import { Hobby, UserInputs } from "../PracticeForm/index";
+import { Hobby } from "../PracticeForm/index";
 
 interface Props {
-  dataUser: UserInputs;
+  dataUser: User;
   setHobbyUpdate: Dispatch<SetStateAction<Hobby>>;
 }
 

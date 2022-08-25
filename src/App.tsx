@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import "./App.css";
 import PracticeForm, { Hobby } from "./components/PracticeForm";
 import ShowUser from "./components/ShowUser";
-import { RootState } from "./redux/store";
+import store, { RootState } from "./redux/store";
 
 const App: React.FC = () => {
   const dataUser = useSelector((state: RootState) => state.user);

@@ -10,7 +10,9 @@ export const addUser = createAsyncThunk(
         const newData = {
           ...data,
         };
-        newData.hobbies[0].key = uuid();
+        newData.hobbies.key = uuid();
+        console.log(newData);
+
         resolve(newData);
       }, 1000);
     });
@@ -42,7 +44,15 @@ export const updateHobby = createAsyncThunk(
   }
 );
 
-const initialState: UserInputs = {
+export type User = {
+  name: string;
+  email: string;
+  bio: string;
+  dateOfBirth: Date;
+  hobbies: Hobby[];
+};
+
+const initialState: User = {
   name: "",
   email: "",
   bio: "",
@@ -56,10 +66,10 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: {
     [addUser.fulfilled.type]: (state, action) => {
-      if (action.payload.hobbies[0].name) {
+      if (action.payload.hobbies.name) {
         return {
           ...action.payload,
-          hobbies: [...state.hobbies, ...action.payload.hobbies],
+          hobbies: [...state.hobbies, action.payload.hobbies],
         };
       }
       return { ...state, ...action.payload, hobbies: state.hobbies };
