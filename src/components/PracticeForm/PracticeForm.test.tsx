@@ -58,6 +58,6 @@ describe("form user", () => {
 
     const searchInput = screen.getByTestId("submit-user") as HTMLInputElement;
     fireEvent.click(searchInput);
-    expect(searchInput.value).toEqual("test");
+    expect(searchInput.).toEqual("test");
   });
 });
