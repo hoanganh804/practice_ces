@@ -19,10 +19,10 @@ const ShowUser: React.FC<Props> = (props) => {
 
   return (
     <div>
-      <div>Name: {dataUser.name}</div>
-      <div>Email: {dataUser.email}</div>
-      <div>Bio: {dataUser.bio}</div>
-      <div>
+      <div data-testid="name">Name: {dataUser.name}</div>
+      <div data-testid="email">Email: {dataUser.email}</div>
+      <div data-testid="bio">Bio: {dataUser.bio}</div>
+      <div data-testid="dateOfBirth">
         Date:
         {dataUser.dateOfBirth && (
           <span>{moment.utc(dataUser.dateOfBirth).format("DD/MM/YYYY")}</span>
@@ -34,7 +34,7 @@ const ShowUser: React.FC<Props> = (props) => {
         {dataUser.hobbies.map((hobby) => {
           return (
             <div key={hobby.key}>
-              <span>{`${hobby.name}: ${hobby.value}`}</span>
+              <span data-testid="hobby">{`${hobby.name}: ${hobby.value}`}</span>
               <button
                 type="button"
                 style={{ height: "30px" }}

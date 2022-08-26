@@ -36,17 +36,17 @@ const PracticeForm: React.FC<Props> = (props) => {
   const { hobbyUpdate, setHobbyUpdate } = props;
 
   const onSubmitUser: SubmitHandler<UserInputs> = (data) => {
-    if (!hobbyUpdate.key) {
-      dispatch(addUser(data));
-      setValue(`hobbies.name`, "");
-      setValue(`hobbies.value`, "");
-    } else {
+    if (hobbyUpdate.key) {
       dispatch(updateHobby({ ...data.hobbies, key: hobbyUpdate.key }));
       setHobbyUpdate({
         name: "",
         value: "",
         key: "",
       });
+      setValue(`hobbies.name`, "");
+      setValue(`hobbies.value`, "");
+    } else {
+      dispatch(addUser(data));
       setValue(`hobbies.name`, "");
       setValue(`hobbies.value`, "");
     }
@@ -95,7 +95,7 @@ const PracticeForm: React.FC<Props> = (props) => {
         <input {...register(`hobbies.value`)} placeholder="description hobby" />
 
         <button type="submit" data-testid="submit-user">
-          {hobbyUpdate.key ? "Update" : "Submit"}
+          {hobbyUpdate.key ? "UpdateUser" : "Submit"}
         </button>
       </div>
     </form>
