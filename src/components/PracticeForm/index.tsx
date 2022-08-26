@@ -30,6 +30,7 @@ const PracticeForm: React.FC<Props> = (props) => {
     formState: { errors },
     control,
     setValue,
+    reset,
   } = useForm<UserInputs>();
   const dispatch = useDispatch<AppDispatch>();
   const { hobbyUpdate, setHobbyUpdate } = props;
@@ -52,13 +53,8 @@ const PracticeForm: React.FC<Props> = (props) => {
   };
 
   useEffect(() => {
-    if (hobbyUpdate.name) {
-      setValue(`hobbies.name`, hobbyUpdate.name);
-    }
-    if (hobbyUpdate.value) {
-      setValue(`hobbies.value`, hobbyUpdate.value);
-    }
-  }, [hobbyUpdate.name, hobbyUpdate.value, setValue]);
+    reset({ hobbies: hobbyUpdate });
+  }, [hobbyUpdate, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmitUser)}>
@@ -68,18 +64,26 @@ const PracticeForm: React.FC<Props> = (props) => {
         <input
           placeholder="email"
           {...register("email", {
-            required: true,
-            pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+            required: "Email is required",
+            pattern: {
+              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+              message: "Email is invalid",
+            },
           })}
         />
-        {errors.email && <span>Invalid email</span>}
+        {errors.email ? (
+          <>
+            {errors.email.type === "required" && <p>{errors.email.message}</p>}
+            {errors.email.type === "pattern" && <p>{errors.email.message}</p>}
+          </>
+        ) : null}
         <input {...register("bio")} placeholder="bio" />
         <Controller
           control={control}
           name="dateOfBirth"
           render={({ field }) => (
             <DatePicker
-              placeholder="date"
+              placeholder="dateOfBirth"
               onChange={(e) => {
                 field.onChange(e);
               }}

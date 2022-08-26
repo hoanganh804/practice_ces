@@ -11,8 +11,6 @@ export const addUser = createAsyncThunk(
           ...data,
         };
         newData.hobbies.key = uuid();
-        console.log(newData);
-
         resolve(newData);
       }, 1000);
     });
