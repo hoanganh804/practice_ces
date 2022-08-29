@@ -119,27 +119,27 @@ describe("form user", () => {
     expect(input.value).toBe("test");
   });
 
-  // it("add user should be success", async () => {
-  //   const addSpy = jest.spyOn(actions, "addUser");
-  //   render(
-  //     <Provider store={store}>
-  //       <PracticeForm
-  //         hobbyUpdate={hobbyUpdate}
-  //         setHobbyUpdate={setHobbyUpdate}
-  //       />
-  //     </Provider>
-  //   );
+  it("add user should be success", async () => {
+    const addSpy = jest.spyOn(actions, "addUser");
+    render(
+      <Provider store={store}>
+        <PracticeForm
+          hobbyUpdate={hobbyUpdate}
+          setHobbyUpdate={setHobbyUpdate}
+        />
+      </Provider>
+    );
 
-  //   fireEvent.change(screen.getByPlaceholderText("email"), {
-  //     target: { value: "anh@gmail.com" },
-  //   });
-  //   fireEvent.change(screen.getByPlaceholderText("name"), {
-  //     target: { value: "123" },
-  //   });
-  //   fireEvent.click(screen.getByText(/Submit/i));
+    fireEvent.change(screen.getByPlaceholderText("email"), {
+      target: { value: "anh@gmail.com" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("name"), {
+      target: { value: "123" },
+    });
+    fireEvent.click(screen.getByText(/Submit/i));
 
-  //   expect(addSpy).toHaveBeenCalled();
-  // });
+    await waitFor(() => expect(addSpy).toHaveBeenCalled());
+  });
 });
 
 describe("validate user", () => {

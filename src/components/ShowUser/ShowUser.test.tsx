@@ -63,7 +63,7 @@ describe("Show User", () => {
     expect(screen.getByTestId("hobby")).toHaveTextContent("food: eggs");
   });
 
-  it("function delete hobby should call", async () => {
+  it("function delete hobby should call", () => {
     const deleteSpy = jest.spyOn(actions, "deleteHobby");
     render(
       <Provider store={store}>
