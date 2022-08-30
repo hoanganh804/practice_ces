@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Provider, useSelector } from "react-redux";
 import "./App.css";
 import PracticeForm, { Hobby } from "./components/PracticeForm";
+import PracticeHook from "./components/PracticeHook";
+import ShowListHobbies from "./components/ShowListHobbies";
 import ShowUser from "./components/ShowUser";
 import store, { RootState } from "./redux/store";
 
@@ -18,8 +20,8 @@ const App: React.FC = () => {
       className="App"
       style={{
         backgroundColor: "#554994",
-        height: "100vh",
-        paddingTop: "100px",
+        height: "1800px",
+        paddingTop: "30px",
       }}
     >
       <div
@@ -35,6 +37,8 @@ const App: React.FC = () => {
           setHobbyUpdate={setHobbyUpdate}
         />
         <ShowUser dataUser={dataUser} setHobbyUpdate={setHobbyUpdate} />
+        <PracticeHook />
+        <ShowListHobbies />
       </div>
     </div>
   );
