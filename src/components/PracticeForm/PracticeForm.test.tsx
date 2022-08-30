@@ -1,39 +1,40 @@
-import React from "react";
-import {
-  render,
-  fireEvent,
-  cleanup,
-  screen,
-  act,
-  waitFor,
-  findByText,
-} from "@testing-library/react";
-import PracticeForm from "./index";
 import "@testing-library/jest-dom";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import { Provider } from "react-redux";
-import store from "../../redux/store";
+import configureMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
 import * as actions from "../../redux/slice/userSlice";
+import PracticeForm, { Hobby } from "./index";
 
 afterEach(cleanup);
 
-describe("form user", () => {
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+const store = mockStore({});
+
+const renderPracticeForm = (): void => {
+  const setHobbyUpdate = jest.fn();
   const hobbyUpdate = {
     name: "",
     value: "",
     key: "",
   };
+  render(
+    <Provider store={store}>
+      <PracticeForm hobbyUpdate={hobbyUpdate} setHobbyUpdate={setHobbyUpdate} />
+    </Provider>
+  );
+};
 
-  const setHobbyUpdate = jest.fn();
-
+describe("form user", () => {
   it("input name", () => {
-    render(
-      <Provider store={store}>
-        <PracticeForm
-          hobbyUpdate={hobbyUpdate}
-          setHobbyUpdate={setHobbyUpdate}
-        />
-      </Provider>
-    );
+    renderPracticeForm();
 
     const input = screen.getByPlaceholderText("name") as HTMLInputElement;
     fireEvent.change(input, { target: { value: "test" } });
@@ -41,14 +42,7 @@ describe("form user", () => {
   });
 
   it("input email", () => {
-    render(
-      <Provider store={store}>
-        <PracticeForm
-          hobbyUpdate={hobbyUpdate}
-          setHobbyUpdate={setHobbyUpdate}
-        />
-      </Provider>
-    );
+    renderPracticeForm();
 
     const input = screen.getByPlaceholderText("email") as HTMLInputElement;
     fireEvent.change(input, { target: { value: "test" } });
@@ -56,14 +50,7 @@ describe("form user", () => {
   });
 
   it("input bio", () => {
-    render(
-      <Provider store={store}>
-        <PracticeForm
-          hobbyUpdate={hobbyUpdate}
-          setHobbyUpdate={setHobbyUpdate}
-        />
-      </Provider>
-    );
+    renderPracticeForm();
 
     const input = screen.getByPlaceholderText("bio") as HTMLInputElement;
     fireEvent.change(input, { target: { value: "test" } });
@@ -71,14 +58,7 @@ describe("form user", () => {
   });
 
   it("input date of birth", () => {
-    render(
-      <Provider store={store}>
-        <PracticeForm
-          hobbyUpdate={hobbyUpdate}
-          setHobbyUpdate={setHobbyUpdate}
-        />
-      </Provider>
-    );
+    renderPracticeForm();
 
     const input = screen.getByPlaceholderText(
       "dateOfBirth"
@@ -88,14 +68,7 @@ describe("form user", () => {
   });
 
   it("input name hobby", () => {
-    render(
-      <Provider store={store}>
-        <PracticeForm
-          hobbyUpdate={hobbyUpdate}
-          setHobbyUpdate={setHobbyUpdate}
-        />
-      </Provider>
-    );
+    renderPracticeForm();
 
     const input = screen.getByPlaceholderText("name hobby") as HTMLInputElement;
     fireEvent.change(input, { target: { value: "test" } });
@@ -103,14 +76,7 @@ describe("form user", () => {
   });
 
   it("input description hobby", () => {
-    render(
-      <Provider store={store}>
-        <PracticeForm
-          hobbyUpdate={hobbyUpdate}
-          setHobbyUpdate={setHobbyUpdate}
-        />
-      </Provider>
-    );
+    renderPracticeForm();
 
     const input = screen.getByPlaceholderText(
       "description hobby"
@@ -119,47 +85,41 @@ describe("form user", () => {
     expect(input.value).toBe("test");
   });
 
-  // it("add user should be success", async () => {
-  //   const addSpy = jest.spyOn(actions, "addUser");
-  //   render(
-  //     <Provider store={store}>
-  //       <PracticeForm
-  //         hobbyUpdate={hobbyUpdate}
-  //         setHobbyUpdate={setHobbyUpdate}
-  //       />
-  //     </Provider>
-  //   );
+  it("add user data should be call true data", async () => {
+    const addSpy = jest.spyOn(actions, "addUser");
+    renderPracticeForm();
 
-  //   fireEvent.change(screen.getByPlaceholderText("email"), {
-  //     target: { value: "anh@gmail.com" },
-  //   });
-  //   fireEvent.change(screen.getByPlaceholderText("name"), {
-  //     target: { value: "123" },
-  //   });
-  //   fireEvent.click(screen.getByText(/Submit/i));
+    fireEvent.change(screen.getByPlaceholderText("email"), {
+      target: { value: "anh@gmail.com" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("name"), {
+      target: { value: "123" },
+    });
+    fireEvent.click(screen.getByText(/Submit/i));
 
-  //   expect(addSpy).toHaveBeenCalled();
-  // });
+    await waitFor(() => {
+      expect(addSpy).toHaveBeenCalled();
+    });
+
+    await waitFor(() => {
+      expect(addSpy).toHaveBeenCalledWith({
+        bio: "",
+        dateOfBirth: undefined,
+        email: "anh@gmail.com",
+        name: "123",
+        hobbies: {
+          key: "",
+          name: "",
+          value: "",
+        },
+      });
+    });
+  });
 });
 
 describe("validate user", () => {
-  const hobbyUpdate = {
-    name: "",
-    value: "",
-    key: "",
-  };
-
-  const setHobbyUpdate = jest.fn();
-
   it("validation user name should be required", async () => {
-    render(
-      <Provider store={store}>
-        <PracticeForm
-          hobbyUpdate={hobbyUpdate}
-          setHobbyUpdate={setHobbyUpdate}
-        />
-      </Provider>
-    );
+    renderPracticeForm();
 
     fireEvent.click(screen.getByText(/Submit/i));
 
@@ -169,14 +129,7 @@ describe("validate user", () => {
   });
 
   it("validation email should be invalid", async () => {
-    render(
-      <Provider store={store}>
-        <PracticeForm
-          hobbyUpdate={hobbyUpdate}
-          setHobbyUpdate={setHobbyUpdate}
-        />
-      </Provider>
-    );
+    renderPracticeForm();
 
     const input = screen.getByPlaceholderText("email") as HTMLInputElement;
     fireEvent.change(input, { target: { value: "test" } });
@@ -188,14 +141,7 @@ describe("validate user", () => {
   });
 
   it("validation email should be required", async () => {
-    render(
-      <Provider store={store}>
-        <PracticeForm
-          hobbyUpdate={hobbyUpdate}
-          setHobbyUpdate={setHobbyUpdate}
-        />
-      </Provider>
-    );
+    renderPracticeForm();
 
     const input = screen.getByPlaceholderText("email") as HTMLInputElement;
     fireEvent.change(input, { target: { value: "" } });
@@ -207,25 +153,34 @@ describe("validate user", () => {
   });
 });
 
-// describe("update user", () => {
-//   it("function update hobby should call", async () => {
-//     const updateSpy = jest.spyOn(actions, "updateHobby");
-//     const hobbyUpdate = {
-//       name: "123sadas",
-//       value: "123dasdasdas",
-//       key: "123dasdasdasdas-da-sd-as",
-//     };
-//     const setHobbyUpdate = jest.fn();
-//     render(
-//       <Provider store={store}>
-//         <PracticeForm
-//           hobbyUpdate={hobbyUpdate}
-//           setHobbyUpdate={setHobbyUpdate}
-//         />
-//       </Provider>
-//     );
+describe("update user", () => {
+  it("function update hobby should call", async () => {
+    const updateSpy = jest.spyOn(actions, "updateHobby");
+    const hobbyUpdate1: Hobby = {
+      name: "test",
+      value: "test",
+      key: "test-da-sd-as",
+    };
+    const setHobbyUpdate = jest.fn();
+    render(
+      <Provider store={store}>
+        <PracticeForm
+          hobbyUpdate={hobbyUpdate1}
+          setHobbyUpdate={setHobbyUpdate}
+        />
+      </Provider>
+    );
+    fireEvent.change(screen.getByPlaceholderText("email"), {
+      target: { value: "anh@gmail.com" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("name"), {
+      target: { value: "123" },
+    });
 
-//     fireEvent.click(screen.getByText(/UpdateUser/i));
-//     expect(updateSpy).toHaveBeenCalled();
-//   });
-// });
+    fireEvent.click(screen.getByText(/UpdateUser/i));
+
+    await waitFor(() => {
+      expect(updateSpy).toHaveBeenCalled();
+    });
+  });
+});

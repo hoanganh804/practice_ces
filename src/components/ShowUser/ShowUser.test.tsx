@@ -1,17 +1,10 @@
 import "@testing-library/jest-dom";
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import moment from "moment";
 import { Provider } from "react-redux";
-import store, { setupStore } from "../../redux/store";
-import ShowUser from "./index";
 import * as actions from "../../redux/slice/userSlice";
-import PracticeForm from "../PracticeForm";
+import store from "../../redux/store";
+import ShowUser from "./index";
 
 describe("Show User", () => {
   const dataUser1 = {

@@ -10,7 +10,9 @@ export const addUser = createAsyncThunk(
         const newData = {
           ...data,
         };
-        newData.hobbies.key = uuid();
+        if (newData.hobbies.name || newData.hobbies.value) {
+          newData.hobbies.key = uuid();
+        }
         resolve(newData);
       }, 1000);
     });
